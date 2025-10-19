@@ -3,8 +3,12 @@ import React from "react";
 import App from "./App";
 import { createMemoryHistory, createBrowserHistory } from "history";
 
-function mount(el, { onNavigate, defaultHistory }) {
-  const history = defaultHistory ?? createMemoryHistory();
+function mount(el, { onNavigate, defaultHistory, initialPath }) {
+  const history =
+    defaultHistory ??
+    createMemoryHistory({
+      initialEntries: [initialPath],
+    });
 
   if (onNavigate) {
     history.listen(onNavigate);
@@ -14,8 +18,10 @@ function mount(el, { onNavigate, defaultHistory }) {
 
   return {
     onParentNavigate({ pathname: nextPathname }) {
-      const { pathname } = history;
-
+      console.log("In Marketing sub component");
+      console.log("Detect the path to go: ", nextPathname);
+      const { pathname } = history.location;
+      console.log("current Pathname", pathname);
       if (pathname !== nextPathname) {
         history.push(nextPathname);
       }
